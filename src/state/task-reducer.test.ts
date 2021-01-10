@@ -33,8 +33,6 @@ test('correct task should be deleted from correct array', () => {
     });
 
 });
-
-
 test('correct task should be added to correct array', () => {
     const startState: TasksStateType = {
         "todolistId1": [
@@ -48,11 +46,8 @@ test('correct task should be added to correct array', () => {
             {id: "3", title: "tea", isDone: false}
         ]
     };
-
     const action = addTaskAC("juice", "todolistId2");
-
     const endState = tasksReducer(startState, action)
-
     expect(endState["todolistId1"].length).toBe(3);
     expect(endState["todolistId2"].length).toBe(4);
     expect(endState["todolistId2"][3].id).toBeDefined();
@@ -72,11 +67,8 @@ test('status of specified task should be changed', () => {
             {id: "3", title: "tea", isDone: false}
         ]
     };
-
     const action = changeTaskStatusAC("2", false, "todolistId2");
-
     const endState = tasksReducer(startState, action)
-
     expect(endState["todolistId2"][1].isDone).toBe(false);
     expect(endState["todolistId2"][1].title).toBe("milk");
 });
@@ -93,11 +85,8 @@ test('title of specified task should be changed', () => {
             {id: "3", title: "tea", isDone: false}
         ]
     }
-
     const action = changeTaskTitleAC("todolistId2", "3", "bacon")
-
     const endState = tasksReducer(startState, action)
-
     expect(endState["todolistId2"][2].id).toBe("3")
     expect(endState["todolistId2"][2].title).toBe("bacon")
 })
@@ -114,18 +103,13 @@ test('new array should be added when new todolist is added', () => {
             { id: "3", title: "tea", isDone: false }
         ]
     };
-
     const action = AddTodolistAc("new todolist");
-
     const endState = tasksReducer(startState, action)
-
-
     const keys = Object.keys(endState);
     const newKey = keys.find(k => k != "todolistId1" && k != "todolistId2");
     if (!newKey) {
         throw Error("new key should be added")
     }
-
     expect(keys.length).toBe(3);
     expect(endState[newKey]).toEqual([]);
 });
@@ -142,12 +126,8 @@ test('property with todolistId should be deleted', () => {
             { id: "3", title: "tea", isDone: false }
         ]
     };
-
     const action = RemoveTodolistAC("todolistId2");
-
     const endState = tasksReducer(startState, action)
-
-
     const keys = Object.keys(endState);
 
     expect(keys.length).toBe(1);

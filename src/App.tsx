@@ -17,7 +17,6 @@ export type TasksStateType = {
     [key: string]: Array<TaskType>
 }
 
-
 function App() {
     let todolistId1 = v1();
     let todolistId2 = v1();
@@ -37,7 +36,6 @@ function App() {
             {id: v1(), title: "React Book", isDone: true}
         ]
     });
-
 
     function removeTask(id: string, todolistId: string) {
         //достанем нужный массив по todolistId:
@@ -121,8 +119,6 @@ function App() {
     }
 
     return (
-
-
         <div className="App">
             <AppBar position="static">
                 <Toolbar>
