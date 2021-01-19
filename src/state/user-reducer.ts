@@ -28,6 +28,6 @@ export const userReducer = (state: StateType, action: ActionType) => {
             }
         }
             default:
-            throw new Error("I don't understand this type")
+            return state
     }
 }
