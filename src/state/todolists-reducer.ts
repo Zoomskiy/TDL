@@ -32,7 +32,7 @@ const initialState: Array<TodolistType> = []
 export const todolistsReducer = (state: Array<TodolistType> = initialState, action: ActionsType): Array<TodolistType> => {
     switch (action.type) {
         case "REMOVE-TODOLIST": {
-            let copyState = state.filter(t => t.id != action.todolistId)
+            let copyState = state.filter(t => t.id !== action.todolistId)
             return copyState
         }
         case "ADD-TODOLIST": {
@@ -53,7 +53,6 @@ export const todolistsReducer = (state: Array<TodolistType> = initialState, acti
                 TDLItem.title = action.title
                 return [...state]
             }
-
         }
         default:
           return state
