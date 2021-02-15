@@ -1,22 +1,25 @@
-import React from "react";
-import {Story, Meta} from "@storybook/react";
 
-import {AddItemForm, AddItemFormPropsType} from "../AddItemForm";
-import {action} from "@storybook/addon-actions";
+ import React from "react";
+ import {Story, Meta} from "@storybook/react";
 
-export default {
-    title: "Todolists/AddItemForm",
-    component: AddItemForm,
-    argTypes: {
-        onClick: {
-            description: "Buttons inside form clicked"
-        }
-    },
-} as Meta
+ import {AddItemForm, AddItemFormPropsType} from "../AddItemForm";
+ import {action} from "@storybook/addon-actions";
 
-const Template: Story<AddItemFormPropsType> = (args) => <AddItemForm {...args}/>
+ export default {
+     title: "Todolists/AddItemForm",
+     component: AddItemForm,
+     argTypes: {
+         onClick: {
+             description: "Buttons inside form clicked"
+         }
+     },
+ } as Meta
 
-export const AddItemFormExample = Template.bind({})
-AddItemFormExample.args = {
-    addItem: action("Buttons inside form clicked")
-}
+ const Template: Story<AddItemFormPropsType> = (args) => <AddItemForm {...args}/>
+
+ export const AddItemFormExample = Template.bind({})
+ AddItemFormExample.args = {
+     addItem: action("Buttons inside form clicked")
+ }
+
+

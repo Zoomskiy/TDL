@@ -1,5 +1,7 @@
-import {FilterValuesType, TodolistType} from '../App';
+import {FilterValuesType} from '../App';
 import {v1} from 'uuid';
+import {Dispatch} from "redux";
+import {todolistsAPI, TodolistType} from "../api/todolists-a-p-i";
 
 export type RemoveTodolistActionType = {
     type: 'REMOVE-TODOLIST',
@@ -20,38 +22,38 @@ export type ChangeTodolistFilterActionType = {
     id: string
     filter: FilterValuesType
 }
-export type SetTodolistsActionType= {
+export type SetTodolistsActionType = {
     type: 'SET-TODOLISTS',
     todolists: Array<TodolistType>
-
 }
-
-
 
 type ActionsType = RemoveTodolistActionType | AddTodolistActionType
     | ChangeTodolistTitleActionType
     | ChangeTodolistFilterActionType
+    | SetTodolistsActionType
 
-const initialState: Array<TodolistType> =  []
+const initialState: Array<TodolistsDomainType> = []
 export type TodolistsDomainType = TodolistType & {
     filter: FilterValuesType
 }
 
-export const todolistsReducer = (state: Array<TodolistsDomainType> = initialState, action: ActionsType): Array<TodolistType> => {
-    switch (action.type) {
+export const todolistsReducer = (state: Array<TodolistsDomainType> = initialState, action: ActionsType): Array<TodolistsDomainType> => {
+    switch(action.type) {
         case 'REMOVE-TODOLIST': {
-            return state.filter(tl => tl.id != action.id)
+            return state.filter(tl => tl.id !== action.id)
         }
         case 'ADD-TODOLIST': {
             return [{
                 id: action.todolistId,
                 title: action.title,
-                filter: 'all'
+                filter: "all",
+                addedDate: "",
+                order: 0
             }, ...state]
         }
         case 'CHANGE-TODOLIST-TITLE': {
             const todolist = state.find(tl => tl.id === action.id);
-            if (todolist) {
+            if(todolist) {
                 // если нашёлся - изменим ему заголовок
                 todolist.title = action.title;
             }
@@ -59,11 +61,20 @@ export const todolistsReducer = (state: Array<TodolistsDomainType> = initialStat
         }
         case 'CHANGE-TODOLIST-FILTER': {
             const todolist = state.find(tl => tl.id === action.id);
-            if (todolist) {
+            if(todolist) {
                 // если нашёлся - изменим ему заголовок
                 todolist.filter = action.filter;
             }
             return [...state]
+        }
+        case "SET-TODOLISTS": {
+            return action.todolists.map(el => {
+                return {
+                    ...el,
+                    filter: "all"
+                }
+
+            })
         }
         default:
             return state;
@@ -71,18 +82,26 @@ export const todolistsReducer = (state: Array<TodolistsDomainType> = initialStat
 }
 
 export const removeTodolistAC = (todolistId: string): RemoveTodolistActionType => {
-    return { type: 'REMOVE-TODOLIST', id: todolistId}
+    return {type: 'REMOVE-TODOLIST', id: todolistId}
 }
 export const addTodolistAC = (title: string): AddTodolistActionType => {
-    return { type: 'ADD-TODOLIST', title: title, todolistId: v1()}
+    return {type: 'ADD-TODOLIST', title, todolistId: v1()}
 }
 export const changeTodolistTitleAC = (id: string, title: string): ChangeTodolistTitleActionType => {
-    return { type: 'CHANGE-TODOLIST-TITLE', id: id, title: title}
+    return {type: 'CHANGE-TODOLIST-TITLE', id, title}
 }
 export const changeTodolistFilterAC = (id: string, filter: FilterValuesType): ChangeTodolistFilterActionType => {
-    return { type: 'CHANGE-TODOLIST-FILTER', id: id, filter: filter}
+    return {type: 'CHANGE-TODOLIST-FILTER', id, filter}
 }
 export const setTodolistsAC = (todolists: Array<TodolistType>): SetTodolistsActionType => {
-    return { type: 'SET-TODOLISTS', todolists}
+    return {type: 'SET-TODOLISTS', todolists}
 }
 
+export const fetchTodolistsTC = () => {
+    return (dispatch: Dispatch) => {
+        todolistsAPI.getTodolist()
+            .then((response) => {
+                dispatch(setTodolistsAC(response.data))
+            })
+    }
+}
