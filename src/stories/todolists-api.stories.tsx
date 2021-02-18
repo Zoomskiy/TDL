@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {todolistsAPI} from "../api/todolists-a-p-i";
+import {TaskStatuses, TaskType, todolistsAPI, UpdateTaskModelType} from "../api/todolists-a-p-i";
 
 export default {
     title: 'API'
@@ -94,8 +94,23 @@ export const UpdateTask = () => {
     const [taskId, setTaskId] = useState<string>("")
     const [titleTask, setTitleTask] = useState<string>("")
 
+    const task = state.tasks[todolistId].find(( t:TaskType) => t.id === taskId)
+    if(!task) {
+        console.warn("Task not found in the state")
+        return
+    }
+
+    const model: UpdateTaskModelType = {
+        deadline:task.deadline,
+        description: task.description,
+        priority: task.priority,
+        startDate: task.startDate,
+        status: TaskStatuses.New,
+        title: task.title
+    }
+
     const updateTaskCall = () => {
-        todolistsAPI.updateTask(todolistId, taskId, titleTask)
+        todolistsAPI.updateTask(todolistId, taskId, model)
             .then((response) => {
                 setState(response.data)
             })
