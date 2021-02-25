@@ -8,7 +8,11 @@ import {useSelector} from "react-redux";
 import {AppRootStateType} from "./store";
 import {RequestStatusType} from "./appReducer";
 
-function App() {
+type PropsType = {
+    demo?: boolean
+}
+
+function App({demo = false}: PropsType) {
    let status =  useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
 
     return (
@@ -27,7 +31,7 @@ function App() {
                 {status === "loading" && <LinearProgress/>}
             </AppBar>
             <Container fixed>
-                <TodolistsList/>
+                <TodolistsList demo={demo}/>
             </Container>
         </div>
     )

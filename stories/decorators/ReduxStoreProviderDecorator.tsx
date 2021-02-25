@@ -5,12 +5,14 @@ import {tasksReducer} from "../../src/features/TodolistsList/tasks-reducer";
 import {todolistsReducer} from "../../src/features/TodolistsList/todolists-reducer";
 import {AppRootStateType} from "../../src/app/store";
 import {v1} from "uuid";
+import {appReducer} from "../../src/app/appReducer";
 
 
 
 const rootReducer = combineReducers({
     tasks: tasksReducer,
-    todolists: todolistsReducer
+    todolists: todolistsReducer,
+    app: appReducer
 })
 
 const initialGlobalState = {
