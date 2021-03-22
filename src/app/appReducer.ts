@@ -49,12 +49,15 @@ export const initializedAppTC = () => (dispatch: Dispatch<any>) => {
         .then(responce => {
             if(responce.data.resultCode === 0){
                 dispatch(setIsLoggedInAC(true))
-            }else {
-
+                dispatch(setAppInitializedAC(true))
             }
-            dispatch(setAppInitializedAC(true))
+
 
         })
+        .catch( () => {
+
+        })
+
 }
 
 
